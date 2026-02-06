@@ -1,72 +1,48 @@
-import { useSelector, useDispatch } from 'react-redux';
-import { addScout, addAttack, addCapture, resetCampaign } from './features/counter/counterSlice';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import Header from './components/Header/Header';
+import MainContent from './components/MainContent/MainContent';
+import Footer from './components/Footer/Footer';
 import './App.css';
 
+// Pages (can be created later)
+function CampaignsPage() {
+  return <div className="page-placeholder">Страница "Кампании" - в разработке</div>;
+}
+
+function AchievementsPage() {
+  return <div className="page-placeholder">Страница "Достижения" - в разработке</div>;
+}
+
+function LeaderboardPage() {
+  return <div className="page-placeholder">Страница "Рейтинг" - в разработке</div>;
+}
+
+function SettingsPage() {
+  return <div className="page-placeholder">Страница "Настройки" - в разработке</div>;
+}
+
+function AboutPage() {
+  return <div className="page-placeholder">Страница "О проекте" - в разработке</div>;
+}
+
 function App() {
-  const { xp, totalXp, level, message } = useSelector(state => state.counter);
-  const dispatch = useDispatch();
-
-  // Прогресс до следующего уровня
-  let progress = 0;
-  let nextLevelXp = 500;
-  let levelName = "Rookie Commander";
-
-  if (level === 2) {
-    progress = ((xp - 500) / 1000) * 100;
-    nextLevelXp = 1500;
-    levelName = "Veteran Commander";
-  } else if (level === 3) {
-    progress = 100; // max
-    levelName = "Elite Commander";
-  } else {
-    progress = (xp / 500) * 100;
-  }
-
   return (
-    <div className="app-wrapper">
-      <header className="header">
-        <h1>Red Alert Commander</h1>
-        <p>Собирай опыт и становись сильнее!</p>
-      </header>
+    <Router>
+      <div className="app-wrapper">
+        <Header />
+        
+        <Routes>
+          <Route path="/" element={<MainContent />} />
+          <Route path="/campaigns" element={<CampaignsPage />} />
+          <Route path="/achievements" element={<AchievementsPage />} />
+          <Route path="/leaderboard" element={<LeaderboardPage />} />
+          <Route path="/settings" element={<SettingsPage />} />
+          <Route path="/about" element={<AboutPage />} />
+        </Routes>
 
-      <main className="main-content">
-        <div className="card">
-          <h2 className="message">{message}</h2>
-
-          <div className="xp-display">
-            <span className="xp-value">{xp} XP</span>
-            <div className="progress-bar">
-              <div className="progress-fill" style={{ width: `${progress}%` }}></div>
-            </div>
-            <p className="progress-text">
-              До следующего уровня: {Math.max(0, nextLevelXp - xp)} XP
-            </p>
-          </div>
-
-          <h3 className="level">Уровень: {levelName}</h3>
-          <p className="total">Всего опыта за карьеру: {totalXp}</p>
-
-          <div className="controls">
-            <button className="btn scout" onClick={() => dispatch(addScout())}>
-              Разведка (+50 XP)
-            </button>
-            <button className="btn attack" onClick={() => dispatch(addAttack())}>
-              Атака (+150 XP)
-            </button>
-            <button className="btn capture" onClick={() => dispatch(addCapture())}>
-              Захват базы (+300 XP)
-            </button>
-            <button className="btn reset" onClick={() => dispatch(resetCampaign())}>
-              Сброс кампании
-            </button>
-          </div>
-        </div>
-      </main>
-
-      <footer className="footer">
-        <p>Вдохновлено Command & Conquer: Red Alert • Redux Demo</p>
-      </footer>
-    </div>
+        <Footer />
+      </div>
+    </Router>
   );
 }
 
