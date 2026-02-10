@@ -1,5 +1,8 @@
 import { useSelector, useDispatch } from 'react-redux';
 import { addScout, addAttack, addCapture, resetCampaign } from '../../features/counter/counterSlice';
+import MissionsList from '../MissionsList/MissionsList';
+import ProductsList from '../ProductsList/ProductsList';
+import NewsList from '../NewsList/NewsList';
 import './MainContent.css';
 
 function MainContent() {
@@ -55,6 +58,11 @@ function MainContent() {
           </button>
         </div>
       </div>
+
+      {/* Новые контенты из JSON */}
+      <MissionsList />
+      <ProductsList />
+      <NewsList />
     </main>
   );
 }
