@@ -1,0 +1,31 @@
+.auth-card {
+  max-width: 420px;
+  margin: 2rem auto;
+  padding: 1.5rem;
+  background: linear-gradient(135deg,#ffffff,#f7f7f7);
+  border-radius: 8px;
+  box-shadow: 0 8px 30px rgba(0,0,0,0.1);
+  color: #111;
+}
+.auth-form {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+.auth-form input, .auth-form select, .auth-form button, .auth-form textarea {
+  padding: 0.6rem 0.8rem;
+  border-radius: 6px;
+  border: 1px solid #ddd;
+}
+.auth-form button {
+  background: #0f3460;
+  color: #fff;
+  border: none;
+  cursor: pointer;
+}
+.auth-form .error {
+  color: #a94442;
+  background: #fdecea;
+  padding: 0.5rem;
+  border-radius: 4px;
+}

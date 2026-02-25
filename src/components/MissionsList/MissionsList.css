@@ -30,6 +30,38 @@
   padding-right: 10px;
 }
 
+.mission-add {
+  background: rgba(255,255,255,0.04);
+  border: 1px dashed rgba(233,69,96,0.2);
+  padding: 10px;
+  border-radius: 6px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.mission-add input, .mission-add select, .mission-add textarea {
+  padding: 6px 8px;
+  border-radius: 4px;
+  border: 1px solid rgba(255,255,255,0.06);
+  background: rgba(0,0,0,0.05);
+  color: #fff;
+}
+.mission-add h4 {
+  margin: 0 0 6px 0;
+  color: #fff;
+}
+
+.delete-btn {
+  margin-top: 8px;
+  background: transparent;
+  color: #ffb3b3;
+  border: 1px solid rgba(255,180,180,0.15);
+  padding: 6px 10px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+.delete-btn:hover { background: rgba(233,69,96,0.08); }
+
 /* Scrollbar styling */
 .missions-list::-webkit-scrollbar {
   width: 8px;

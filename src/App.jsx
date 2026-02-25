@@ -1,10 +1,12 @@
-import { BrowserRouter as Router, Routes, Route, NavLink } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Header from './components/Header/Header';
 import Footer from './components/Footer/Footer';
 import MainContent from './components/MainContent/MainContent';
 import MissionsList from './components/MissionsList/MissionsList';
 import ProductsList from './components/ProductsList/ProductsList';
 import NewsList from './components/NewsList/NewsList';
+import Login from './components/Auth/Login';
+import Register from './components/Auth/Register';
 import './App.css';
 
 // Плейсхолдер-страницы (можно потом заполнить)
@@ -68,6 +70,8 @@ function App() {
             <Route path="/leaderboard" element={<LeaderboardPage />} />
             <Route path="/settings" element={<SettingsPage />} />
             <Route path="/about" element={<AboutPage />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/register" element={<Register />} />
           </Routes>
         </main>
 

@@ -1,6 +1,7 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { fetchMissions, selectMission } from '../../features/content/contentSlice';
+import { addMission, deleteMission } from '../../features/content/contentSlice';
 import './MissionsList.css';
 
 function MissionsList() {
@@ -14,6 +15,18 @@ function MissionsList() {
   }, [dispatch]);
 
   const selectedMission = missions.find(m => m.id === selectedId);
+
+  const user = useSelector(state => state.auth.user);
+  const isRoot = user && user.role === 'root';
+
+  // Local form state for adding missions (admin/root only)
+  const [form, setForm] = useState({ title: '', description: '', difficulty: 'Лёгкая', reward: 100, location: '' });
+
+  const handleAdd = () => {
+    if (!form.title) return;
+    dispatch(addMission(form));
+    setForm({ title: '', description: '', difficulty: 'Лёгкая', reward: 100, location: '' });
+  };
 
   if (loading) {
     return (
@@ -29,6 +42,21 @@ function MissionsList() {
       <div className="missions-layout">
         {/* LIST */}
         <div className="missions-list">
+          {isRoot && (
+            <div className="mission-add">
+              <h4>Добавить миссию (Root)</h4>
+              <input value={form.title} onChange={e=>setForm({...form,title:e.target.value})} placeholder="Название" />
+              <input value={form.location} onChange={e=>setForm({...form,location:e.target.value})} placeholder="Местоположение" />
+              <select value={form.difficulty} onChange={e=>setForm({...form,difficulty:e.target.value})}>
+                <option>Лёгкая</option>
+                <option>Средняя</option>
+                <option>Высокая</option>
+              </select>
+              <input type="number" value={form.reward} onChange={e=>setForm({...form,reward: Number(e.target.value)})} />
+              <textarea value={form.description} onChange={e=>setForm({...form,description:e.target.value})} placeholder="Короткое описание"></textarea>
+              <button className="accept-btn" onClick={handleAdd}>Добавить</button>
+            </div>
+          )}
           {missions.map(mission => (
             <div
               key={mission.id}
@@ -40,6 +68,9 @@ function MissionsList() {
                 {mission.difficulty}
               </p>
               <p className="reward">+{mission.reward} XP</p>
+              {isRoot && (
+                <button className="delete-btn" onClick={(e)=>{ e.stopPropagation(); dispatch(deleteMission(mission.id)); }}>Удалить</button>
+              )}
             </div>
           ))}
         </div>

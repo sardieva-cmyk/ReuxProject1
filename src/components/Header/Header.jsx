@@ -1,7 +1,12 @@
-import { Link } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
+import { useSelector, useDispatch } from 'react-redux';
+import { logout } from '../../features/auth/authSlice';
 import './Header.css';
 
 function Header() {
+  const dispatch = useDispatch();
+  const user = useSelector(state => state.auth.user);
+
   return (
     <header className="header">
       <div className="header-container">
@@ -13,23 +18,43 @@ function Header() {
         <nav className="navbar">
           <ul className="nav-menu">
             <li className="nav-item">
-              <Link to="/" className="nav-link">Главная</Link>
+              <NavLink to="/" className={({isActive}) => `nav-link ${isActive ? 'active' : ''}`}>Главная</NavLink>
             </li>
             <li className="nav-item">
-              <Link to="/campaigns" className="nav-link">Кампании</Link>
+              <NavLink to="/campaigns" className={({isActive}) => `nav-link ${isActive ? 'active' : ''}`}>Кампании</NavLink>
             </li>
             <li className="nav-item">
-              <Link to="/achievements" className="nav-link">Достижения</Link>
+              <NavLink to="/achievements" className={({isActive}) => `nav-link ${isActive ? 'active' : ''}`}>Достижения</NavLink>
             </li>
             <li className="nav-item">
-              <Link to="/leaderboard" className="nav-link">Рейтинг</Link>
+              <NavLink to="/leaderboard" className={({isActive}) => `nav-link ${isActive ? 'active' : ''}`}>Рейтинг</NavLink>
             </li>
             <li className="nav-item">
-              <Link to="/settings" className="nav-link">Настройки</Link>
+              <NavLink to="/settings" className={({isActive}) => `nav-link ${isActive ? 'active' : ''}`}>Настройки</NavLink>
             </li>
             <li className="nav-item">
-              <Link to="/about" className="nav-link">О проекте</Link>
+              <NavLink to="/about" className={({isActive}) => `nav-link ${isActive ? 'active' : ''}`}>О проекте</NavLink>
             </li>
+
+            {!user && (
+              <>
+                <li className="nav-item">
+                  <NavLink to="/login" className={({isActive}) => `nav-link ${isActive ? 'active' : ''}`}>Вход</NavLink>
+                </li>
+                <li className="nav-item">
+                  <NavLink to="/register" className={({isActive}) => `nav-link ${isActive ? 'active' : ''}`}>Регистрация</NavLink>
+                </li>
+              </>
+            )}
+
+            {user && (
+              <li className="nav-item">
+                <div className="nav-link" style={{display: 'flex', gap: '0.5rem', alignItems: 'center'}}>
+                  <span>{user.username} {user.role === 'root' ? '(Root)' : ''}</span>
+                  <button className="logout-btn" onClick={() => dispatch(logout())}>Выйти</button>
+                </div>
+              </li>
+            )}
           </ul>
         </nav>
       </div>

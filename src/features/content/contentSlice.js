@@ -66,6 +66,16 @@ const contentSlice = createSlice({
   reducers: {
     selectMission: (state, action) => {
       state.missions.selectedId = action.payload;
+    },
+    addMission: (state, action) => {
+      const mission = { id: Date.now(), ...action.payload };
+      state.missions.items.unshift(mission);
+      localStorage.setItem('missions', JSON.stringify(state.missions.items));
+    },
+    deleteMission: (state, action) => {
+      const id = action.payload;
+      state.missions.items = state.missions.items.filter(m => m.id !== id);
+      localStorage.setItem('missions', JSON.stringify(state.missions.items));
     }
   },
   extraReducers: (builder) => {
@@ -77,7 +87,19 @@ const contentSlice = createSlice({
       })
       .addCase(fetchMissions.fulfilled, (state, action) => {
         state.missions.loading = false;
-        state.missions.items = action.payload;
+        // Если в localStorage уже есть миссии (после добавления/удаления), используем их
+        const stored = localStorage.getItem('missions');
+        if (stored) {
+          try {
+            state.missions.items = JSON.parse(stored);
+          } catch (e) {
+            state.missions.items = action.payload;
+            localStorage.setItem('missions', JSON.stringify(action.payload));
+          }
+        } else {
+          state.missions.items = action.payload;
+          localStorage.setItem('missions', JSON.stringify(action.payload));
+        }
       })
       .addCase(fetchMissions.rejected, (state, action) => {
         state.missions.loading = false;
@@ -112,5 +134,5 @@ const contentSlice = createSlice({
   }
 });
 
-export const { selectMission } = contentSlice.actions;
+export const { selectMission, addMission, deleteMission } = contentSlice.actions;
 export default contentSlice.reducer;
